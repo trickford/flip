@@ -1,4 +1,4 @@
-spoontwisted/flip
+trickford/flip
 ========
 this is literally everything you need to know
 
