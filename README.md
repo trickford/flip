@@ -2,7 +2,10 @@ trickford/flip
 ========
 this is literally everything you need to know
 
-    $("#container").flip({
-      'text': 'text',
-      'number': 1234
-    });
+###to initialize:
+
+    $("#container").flip(text, number, config);
+
+###to update:
+
+    $("#container").flip(text, number);
