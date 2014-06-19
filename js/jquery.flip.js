@@ -63,7 +63,7 @@
 				'width': '100%',
 				'height': this.config.tiles.halfHeight
 			}).append($("<span>").css({
-				'font-size': this.config.tiles.halfHeight * 2,
+				'font-size': this.config.tiles.halfHeight * 1.6,
 				'line-height': this.config.tiles.halfHeight * 2 + "px"
 			}));
 
@@ -73,7 +73,7 @@
 				'margin-top': this.config.tiles.spacing
 			}).append($("<span>").css({
 				'margin-top': this.config.tiles.halfHeight * -1,
-				'font-size': this.config.tiles.halfHeight * 2,
+				'font-size': this.config.tiles.halfHeight * 1.6,
 				'line-height': this.config.tiles.halfHeight * 2 + "px"
 			}));
 
@@ -94,8 +94,9 @@
 			var $bot = $tile.find(".bot span");
 			var text = this.config.text.charAt(t - this.config.textStart);
 
-			$top.html(text)
-			$bot.html(text)
+			$top.html(text);
+			$bot.html(text);
+			$tile.addClass("filled");
 		}
 
 		for(var n = this.config.numberStart; n < (this.config.numberStart + this.config.numberLength); n++){
@@ -104,8 +105,9 @@
 			var $bot = $tile.find(".bot span");
 			var text = this.config.number.charAt(n - this.config.numberStart);
 
-			$top.html(text)
-			$bot.html(text)
+			$top.html(text);
+			$bot.html(text);
+			$tile.addClass("filled");
 		}
 	}
 
