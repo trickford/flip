@@ -3,8 +3,9 @@
 	function Flip(config){
 		var defaults = {
 			tiles: {
-				count: 30,
+				count: 24,
 				margin: 2,
+				gap: 1,
 				spacing: 2
 			}
 		}
@@ -70,7 +71,7 @@
 			var $bot = $("<span>").addClass("bot").css({
 				'width': '100%',
 				'height': this.config.tiles.halfHeight,
-				'margin-top': this.config.tiles.spacing
+				'margin-top': this.config.tiles.gap
 			}).append($("<span>").css({
 				'margin-top': this.config.tiles.halfHeight * -1,
 				'font-size': this.config.tiles.halfHeight * 1.6,
