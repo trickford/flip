@@ -1,17 +1,17 @@
 {
-  'name': "flip",
-  'version': "0.1",
-  'homepage': "https://github.com/trickford/plot",
-  'authors': [
+  "name": "flip",
+  "version": "0.1",
+  "homepage": "https://github.com/trickford/plot",
+  "authors": [
     "Rick Ford <rickfordrick@gmail.com>"
   ],
-  'main': "js/jquery.flip.js",
-  'moduleType': [
+  "main": "js/jquery.flip.js",
+  "moduleType": [
     "globals"
   ],
-  'license': "MIT",
-  'private': true,
-  'ignore': [
+  "license": "MIT",
+  "private": true,
+  "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
