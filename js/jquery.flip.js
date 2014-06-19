@@ -29,10 +29,8 @@
 
 		if(!this.update){
 			this.createTiles();
-			this.fillTiles();
-		}else{
-			this.updateTiles();
 		}
+		this.updateTiles();
 
 		this.config.$container.data("config", this.config).addClass("flip");
 
@@ -102,33 +100,6 @@
 		this.config.$container.append(this.config.$flat);
 	}
 
-	Flip.prototype.fillTiles = function(){
-		var $dynTiles = this.config.$dyn.find(".tile");
-		var $flatTiles = this.config.$flat.find(".tile");
-
-		for(var t = this.config.textStart; t < (this.config.textStart + this.config.textLength); t++){
-			var $tile = $($dynTiles[t]);
-			var $top = $tile.find(".top span");
-			var $bot = $tile.find(".bot span");
-			var text = this.config.text.charAt(t - this.config.textStart);
-
-			$top.html(text);
-			$bot.html(text);
-			$tile.addClass("filled");
-		}
-
-		for(var n = this.config.numberStart; n < (this.config.numberStart + this.config.numberLength); n++){
-			var $tile = $($dynTiles[n]);
-			var $top = $tile.find(".top span");
-			var $bot = $tile.find(".bot span");
-			var text = this.config.number.charAt(n - this.config.numberStart);
-
-			$top.html(text);
-			$bot.html(text);
-			$tile.addClass("filled");
-		}
-	}
-
 	Flip.prototype.updateTiles = function(){
 		var $dynTiles = this.config.$dyn.find(".tile");
 		var $flatTiles = this.config.$flat.find(".tile");
@@ -137,32 +108,42 @@
 
 		for(var t = 0; t < this.config.tiles.count; t++){
 			var $dynTile = $($dynTiles[t]);
+			var $flatTile = $($flatTiles[t]);
+			var update = false;
+			var text = false;
 
+			// if tile has content, update
 			if($dynTile.hasClass("filled")){
-				this.emptyTile
-				$dynTile.find("span span").empty();
+				update = true;
 			}
 
+			// if tiles needs content, set content and update
 			if(t >= this.config.textStart && t < textEnd){
-				var $top = $dynTile.find(".top span");
-				var $bot = $dynTile.find(".bot span");
-				var text = this.config.text.charAt(t - this.config.textStart);
-
-				$top.html(text);
-				$bot.html(text);
-				$dynTile.addClass("filled");
+				update = true;
+				text = this.config.text.charAt(t - this.config.textStart);
 			}
 
 			if(t >= this.config.numberStart && t < numberEnd){
-				var $top = $dynTile.find(".top span");
-				var $bot = $dynTile.find(".bot span");
-				var number = this.config.number.charAt(t - this.config.numberStart);
+				update = true;
+				text = this.config.number.charAt(t - this.config.numberStart);
+			}
 
-				$top.html(number);
-				$bot.html(number);
-				$dynTile.addClass("filled");
+			// if tile needs updating, update ...duh
+			if(update){
+				this.updateTile($dynTile, $flatTile, text)
 			}
 		}
+	}
+
+	Flip.prototype.updateTile = function($dynTile, $flatTile, newText){
+		console.log($dynTile, $flatTile, newText);
+
+		var $top = $dynTile.find(".top span");
+		var $bot = $dynTile.find(".bot span");
+
+		$top.html(newText);
+		$bot.html(newText);
+		$dynTile.addClass("filled");
 	}
 
 	// for the jquery duh
