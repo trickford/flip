@@ -18,8 +18,8 @@
 			this.config = this.config.$container.data("config");
 		}
 
-		this.config.text = text;
-		this.config.number = number;
+		this.config.text = text.toString();
+		this.config.number = number.toString();
 
 		if(!this.update){
 			this.init();
@@ -38,7 +38,7 @@
 		return this;
 	}
 
-	// figure out the stuff
+	// set container sizing
 	Flip.prototype.init = function(){
 		this.config.width = this.config.$container.width();
 		this.config.height = this.config.$container.height();
@@ -50,30 +50,40 @@
 		this.config.$dyn = this.config.$container.find(".dyn");
 	}
 
+	// figure out where everything goes
 	Flip.prototype.calc = function(){
 		var emptyLength;
+		var lengthCalc;
+		var extraSpace;
 
-		this.config.number = this.config.number.toString()
 		this.config.textLength = this.config.text.length;
 		this.config.numberLength = this.config.number.length;
 
+
+		lengthCalc = (this.config.tiles.count - this.config.textLength - this.config.numberLength - this.config.tiles.spacing);
+		extraSpace = lengthCalc % 2;
+
 		// count empty tiles, round down to nearest even number
-		emptyLength = Math.floor((this.config.tiles.count - this.config.textLength - this.config.numberLength - this.config.tiles.spacing) / 2);
+		emptyLength = Math.floor(lengthCalc / 2);
 
 		// determine where to place text, numbers
 		this.config.textStart = emptyLength;
-		this.config.numberStart = emptyLength + this.config.textLength + this.config.tiles.spacing;
+		this.config.numberStart = emptyLength + this.config.textLength + this.config.tiles.spacing + extraSpace;
 	}
 
+	// style stuff and put it where it goes
 	Flip.prototype.createTiles = function(){
 
 		for(var tile = 0; tile < this.config.tiles.count; tile++){
 
+			// tile parent
 			var $tile = $("<span>").addClass("tile").css({
 				'width': this.config.tiles.width,
 				'height': this.config.height,
 				'padding-left': this.config.tiles.margin
 			});
+
+			// top half of tile
 			var $top = $("<span>").addClass("top").css({
 				'width': '100%',
 				'height': this.config.tiles.halfHeight
@@ -82,6 +92,7 @@
 				'line-height': this.config.tiles.halfHeight * 2 + "px"
 			}));
 
+			// bottom half of tile
 			var $bot = $("<span>").addClass("bot").css({
 				'width': '100%',
 				'height': this.config.tiles.halfHeight,
@@ -92,14 +103,17 @@
 				'line-height': this.config.tiles.halfHeight * 2 + "px"
 			}));
 
+			// put everything in the DOM
 			$tile.append($top).append($bot);
-
 			this.config.$dyn.append($tile);
 		}
+
+		// duplicate what we just did for pretty stuff later
 		this.config.$flat = this.config.$dyn.clone().removeClass("dyn").addClass("flat");
 		this.config.$container.append(this.config.$flat);
 	}
 
+	// put your text in the tiles
 	Flip.prototype.updateTiles = function(){
 		var $dynTiles = this.config.$dyn.find(".tile");
 		var $flatTiles = this.config.$flat.find(".tile");
@@ -135,6 +149,7 @@
 		}
 	}
 
+	// update tile with new text
 	Flip.prototype.updateTile = function($dynTile, $flatTile, newText){
 		console.log($dynTile, $flatTile, newText);
 
