@@ -123,47 +123,85 @@
 		for(var t = 0; t < this.config.tiles.count; t++){
 			var $dynTile = $($dynTiles[t]);
 			var $flatTile = $($flatTiles[t]);
-			var update = false;
 			var text = false;
-
-			// if tile has content, update
-			if($dynTile.hasClass("filled")){
-				update = true;
-			}
 
 			// if tiles needs content, set content and update
 			if(t >= this.config.textStart && t < textEnd){
-				update = true;
 				text = this.config.text.charAt(t - this.config.textStart);
 			}
 
 			if(t >= this.config.numberStart && t < numberEnd){
-				update = true;
 				text = this.config.number.charAt(t - this.config.numberStart);
 			}
 
 			// if tile needs updating, update ...duh
-			if(update){
-				this.updateTile($dynTile, $flatTile, text)
-			}
+			this.updateTile($dynTile, $flatTile, text);
 		}
 	}
 
 	// update tile with new text
 	Flip.prototype.updateTile = function($dynTile, $flatTile, newText){
-		console.log($dynTile, $flatTile, newText);
 
-		var $top = $dynTile.find(".top span");
-		var $bot = $dynTile.find(".bot span");
+		var $dynTop = $dynTile.find(".top");
+		var $dynTopContent = $dynTile.find(".top span");
+		var $flatTopContent = $flatTile.find(".top span");
+		var $dynBot = $dynTile.find(".bot");
+		var $dynBotContent = $dynTile.find(".bot span");
+		var $flatBotContent = $flatTile.find(".bot span");
 
-		$top.html(newText);
-		$bot.html(newText);
-		$dynTile.addClass("filled");
+		if(newText){
+			var delay = Math.random() * (250 - 100);
+		}else{
+			var delay = 100;
+		}
+
+		// nest everything
+		$dynTop.css({"visibility": "visible"});
+		$dynBot.css({"visibility": "hidden"}).transition({
+			transform: "rotate3d(1, 0, 0, -90deg)",
+			duration: 0
+		});
+		$dynTop.css({"visibility": "visible"}).transition({
+			transform: "rotate3d(1, 0, 0, 90deg)",
+			duration: 500,
+			delay: delay
+		}, function(){
+		$flatTopContent.html(newText);
+			$dynTop.css({"visibility": "hidden"}).transition({
+				transform: "rotate3d(1, 0, 0, 0deg)",
+				duration: 0,
+				delay: 0,
+				"visibility": "visible"
+			}, function(){
+				$dynTopContent.html(newText);
+				$dynBotContent.html(newText);
+			});
+
+			$dynBot.css({"visibility": "visible"}).transition({
+				transform: "rotate3d(1, 0, 0, 0deg)",
+				duration: 500
+			}, function(){
+				$flatBotContent.html(newText);
+			})
+		})
+
+		// reset "filled" class
+		$dynTile.removeClass("filled");
+		if(newText){
+			$dynTile.addClass("filled");
+		}
+
 	}
 
 	// for the jquery duh
 	$.fn.flip = function(text, number, config){
 		var defaults = config || {};
+
+		// Delegate .transition() calls to .animate()
+		// if the browser can't do CSS transitions.
+		if(!$.support.transition){
+			$.fn.transition = $.fn.animate;
+		}
 
 		// add container to config
 		defaults.$container = $(this);
