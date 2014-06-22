@@ -22,14 +22,16 @@
   vertical-align: middle;
   color: #FFF;
 }
+.flip .tile {
+  -webkit-perspective: 100;
+  z-index: 1;
+}
 .flip .tile .top {
   background: #444;
   border-radius: 3px 3px 0 0;
   overflow: hidden;
   -webkit-transform-origin: 0 100%;
-  -webkit-transform: rotate3d(1, 0, 0, 0deg);
-}
-.flip .dyn .tile .top {
+  visibility: visible;
 }
 .flip .tile .top span {
   width: 100%;
@@ -40,7 +42,6 @@
   border-radius: 0 0 3px 3px;
   overflow: hidden;
   -webkit-transform-origin: 100% 0;
-  -webkit-transform: rotate3d(1, 0, 0, 0deg);
 }
 .flip .tile .bot span {
   width: 100%;

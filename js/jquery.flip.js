@@ -84,23 +84,27 @@
 			});
 
 			// top half of tile
-			var $top = $("<span>").addClass("top").css({
+			var $top = $("<span>").addClass("top").transition({
 				'width': '100%',
-				'height': this.config.tiles.halfHeight
+				'height': this.config.tiles.halfHeight,
+				'visibility': 'visible',
+				'duration': 0
 			}).append($("<span>").css({
-				'font-size': this.config.tiles.halfHeight * 1.6,
-				'line-height': this.config.tiles.halfHeight * 2 + "px"
+				'font-size': Math.floor(this.config.tiles.halfHeight * 1.6),
+				'line-height': Math.floor(this.config.tiles.halfHeight * 2) + "px"
 			}));
 
 			// bottom half of tile
-			var $bot = $("<span>").addClass("bot").css({
+			var $bot = $("<span>").addClass("bot").transition({
 				'width': '100%',
 				'height': this.config.tiles.halfHeight,
-				'margin-top': this.config.tiles.gap
+				'visibility': 'visible',
+				'margin-top': this.config.tiles.gap,
+				'duration': 0
 			}).append($("<span>").css({
 				'margin-top': this.config.tiles.halfHeight * -1,
-				'font-size': this.config.tiles.halfHeight * 1.6,
-				'line-height': this.config.tiles.halfHeight * 2 + "px"
+				'font-size': Math.floor(this.config.tiles.halfHeight * 1.6),
+				'line-height': Math.floor(this.config.tiles.halfHeight * 2) + "px"
 			}));
 
 			// put everything in the DOM
@@ -145,45 +149,64 @@
 		var $dynTop = $dynTile.find(".top");
 		var $dynTopContent = $dynTile.find(".top span");
 		var $flatTopContent = $flatTile.find(".top span");
+
 		var $dynBot = $dynTile.find(".bot");
 		var $dynBotContent = $dynTile.find(".bot span");
 		var $flatBotContent = $flatTile.find(".bot span");
 
-		if(newText){
-			var delay = Math.random() * (250 - 100);
-		}else{
-			var delay = 100;
-		}
+		var delay = Math.random() * (600 - 100);
+		var duration = 600;
 
-		// nest everything
-		$dynTop.css({"visibility": "visible"});
-		$dynBot.css({"visibility": "hidden"}).transition({
-			transform: "rotate3d(1, 0, 0, -90deg)",
-			duration: 0
-		});
-		$dynTop.css({"visibility": "visible"}).transition({
-			transform: "rotate3d(1, 0, 0, 90deg)",
-			duration: 500,
-			delay: delay
-		}, function(){
-		$flatTopContent.html(newText);
-			$dynTop.css({"visibility": "hidden"}).transition({
-				transform: "rotate3d(1, 0, 0, 0deg)",
-				duration: 0,
-				delay: 0,
-				"visibility": "visible"
+		var resetTiles = function(){
+			$dynTop.transition({
+				'transform': 'rotateX(0deg)',
+				'duration': 1
 			}, function(){
-				$dynTopContent.html(newText);
-				$dynBotContent.html(newText);
+				$dynTop.css({'visibility': 'visible'});
 			});
 
-			$dynBot.css({"visibility": "visible"}).transition({
-				transform: "rotate3d(1, 0, 0, 0deg)",
-				duration: 500
+			$dynBot.transition({
+				'transform': 'rotateX(90deg)',
+				'duration': 1
 			}, function(){
-				$flatBotContent.html(newText);
-			})
-		})
+				$dynBot.css({'visibility': 'hidden'});
+			});
+		}
+
+		// set it up
+		if(!this.initialized){
+			resetTiles();
+		}
+
+		if($dynTile.hasClass("filled") || newText){
+			// fill back top tile
+			$flatTopContent.html(newText);
+			// fill front bottom tile
+			$dynBotContent.html(newText);
+
+			// flip top tile down
+			$dynTop.transition({
+				'transform': 'rotateX(-90deg)',
+				'duration': duration,
+				'delay': delay
+			}, function(){
+				// hide top tile
+				$dynTop.css({'visibility': 'hidden'});
+				// show bottom tile
+				$dynBot.css({'visibility': 'visible'});
+				// flip bottom tile down
+				$dynBot.transition({
+					'transform': 'rotateX(0deg)',
+					duration: duration
+				}, function(){
+					// fill remaining tiles
+					$flatBotContent.html(newText);
+					$dynTopContent.html(newText);
+					// reset for next animation
+					resetTiles();
+				});
+			});
+		}
 
 		// reset "filled" class
 		$dynTile.removeClass("filled");
