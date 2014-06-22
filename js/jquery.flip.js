@@ -87,9 +87,8 @@
 			var $top = $("<span>").addClass("top").transition({
 				'width': '100%',
 				'height': this.config.tiles.halfHeight,
-				'visibility': 'visible',
-				'duration': 0
-			}).append($("<span>").css({
+				'visibility': 'visible'
+			}, 0).append($("<span>").css({
 				'font-size': Math.floor(this.config.tiles.halfHeight * 1.6),
 				'line-height': Math.floor(this.config.tiles.halfHeight * 2) + "px"
 			}));
@@ -99,9 +98,8 @@
 				'width': '100%',
 				'height': this.config.tiles.halfHeight,
 				'visibility': 'visible',
-				'margin-top': this.config.tiles.gap,
-				'duration': 0
-			}).append($("<span>").css({
+				'margin-top': this.config.tiles.gap
+			}, 0).append($("<span>").css({
 				'margin-top': this.config.tiles.halfHeight * -1,
 				'font-size': Math.floor(this.config.tiles.halfHeight * 1.6),
 				'line-height': Math.floor(this.config.tiles.halfHeight * 2) + "px"
@@ -159,16 +157,14 @@
 
 		var resetTiles = function(){
 			$dynTop.transition({
-				'transform': 'rotateX(0deg)',
-				'duration': 1
-			}, function(){
+				'transform': 'rotateX(0deg)'
+			}, 1, function(){
 				$dynTop.css({'visibility': 'visible'});
 			});
 
 			$dynBot.transition({
-				'transform': 'rotateX(90deg)',
-				'duration': 1
-			}, function(){
+				'transform': 'rotateX(90deg)'
+			}, 1, function(){
 				$dynBot.css({'visibility': 'hidden'});
 			});
 		}
@@ -187,18 +183,16 @@
 			// flip top tile down
 			$dynTop.transition({
 				'transform': 'rotateX(-90deg)',
-				'duration': duration,
 				'delay': delay
-			}, function(){
+			}, duration, function(){
 				// hide top tile
 				$dynTop.css({'visibility': 'hidden'});
 				// show bottom tile
 				$dynBot.css({'visibility': 'visible'});
 				// flip bottom tile down
 				$dynBot.transition({
-					'transform': 'rotateX(0deg)',
-					duration: duration
-				}, function(){
+					'transform': 'rotateX(0deg)'
+				}, duration, function(){
 					// fill remaining tiles
 					$flatBotContent.html(newText);
 					$dynTopContent.html(newText);
