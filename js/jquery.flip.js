@@ -7,7 +7,8 @@
 				margin: 2,
 				gap: 1,
 				spacing: 2
-			}
+			},
+			resizeDelay: 100
 		}
 
 		// mash config with defaults
@@ -32,10 +33,42 @@
 		}
 		this.updateTiles();
 
+		this.events();
+
 		this.config.$container.data("config", this.config).addClass("flip");
 
 		// return to jQuery chain
 		return this;
+	}
+
+	// them events
+	Flip.prototype.events = function(){
+		var self = this;
+
+		// on window resize, if container changes width, reset the whole thing
+		$(window).on("resize", function(){
+
+			if(!self.waiting && self.config.$container.width() != self.config.width){
+
+				self.waiting = true;
+
+				setTimeout(function(){
+
+					self.resize();
+
+				}, self.config.resizeDelay);
+			}
+		})
+	}
+
+	// self explanatory
+	Flip.prototype.resize = function(){
+		this.config.$container.empty();
+		this.init();
+		this.calc();
+		this.createTiles();
+		this.updateTiles();
+		this.waiting = false;
 	}
 
 	// set container sizing
@@ -181,10 +214,6 @@
 				'transform': 'rotateX(-90deg)',
 				'delay': delay
 			}, duration, function(){
-				// // hide top tile
-				// $dynTop.css({'visibility': 'hidden'});
-				// // show bottom tile
-				// $dynBot.css({'visibility': 'visible'});
 				// flip bottom tile down
 				$dynBot.transition({
 					'transform': 'rotateX(0deg)'
