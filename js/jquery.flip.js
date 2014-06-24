@@ -106,6 +106,10 @@
 
 	// style stuff and put it where it goes
 	Flip.prototype.createTiles = function(){
+		this.config.$dyn.css({
+			'width': this.config.width,
+			'height': this.config.height
+		});
 
 		for(var tile = 0; tile < this.config.tiles.count; tile++){
 
