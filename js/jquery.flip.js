@@ -158,15 +158,11 @@
 		var resetTiles = function(){
 			$dynTop.transition({
 				'transform': 'rotateX(0deg)'
-			}, 1, function(){
-				$dynTop.css({'visibility': 'visible'});
-			});
+			}, 1);
 
 			$dynBot.transition({
 				'transform': 'rotateX(90deg)'
-			}, 1, function(){
-				$dynBot.css({'visibility': 'hidden'});
-			});
+			}, 1);
 		}
 
 		// set it up
@@ -185,10 +181,10 @@
 				'transform': 'rotateX(-90deg)',
 				'delay': delay
 			}, duration, function(){
-				// hide top tile
-				$dynTop.css({'visibility': 'hidden'});
-				// show bottom tile
-				$dynBot.css({'visibility': 'visible'});
+				// // hide top tile
+				// $dynTop.css({'visibility': 'hidden'});
+				// // show bottom tile
+				// $dynBot.css({'visibility': 'visible'});
 				// flip bottom tile down
 				$dynBot.transition({
 					'transform': 'rotateX(0deg)'
